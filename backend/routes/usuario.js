@@ -2,6 +2,31 @@ const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/usuarioModel');
 
+// Login de usuario
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecreto';
+
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const usuario = await Usuario.findOne({ email });
+        if (!usuario) {
+            return res.status(401).json({ message: 'Usuario no existe, por favor cree una cuenta' });
+        }
+        const esValida = await usuario.compararContrasena(password);
+        if (!esValida) {
+            return res.status(401).json({ message: 'Usuario o contraseña incorrecta' });
+        }
+        const obj = usuario.toObject();
+        delete obj.contrasena;
+        // Se genera el token JWT
+        const token = jwt.sign({ id: usuario._id, email: usuario.email, rol: usuario.rol }, JWT_SECRET, { expiresIn: '1d' });
+        res.json({ usuario: obj, token });
+    } catch (error) {
+        res.status(500).json({ message: 'Error en el login' });
+    }
+});
+
 // Listar usuarios (sin contraseña)
 router.get('/', async (req, res) => {
     try {
