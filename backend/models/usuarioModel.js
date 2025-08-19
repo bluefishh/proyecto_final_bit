@@ -10,7 +10,7 @@ const usuarioSchema = new Schema({
     },
     segundoNombre: {
         type: String,
-        required: true
+        required: false
     },
     primerApellido: {
         type: String,
@@ -18,7 +18,7 @@ const usuarioSchema = new Schema({
     },
     segundoApellido: {
         type: String,
-        required: true
+        required: false
     },
     email: {
         type: String,
@@ -47,7 +47,7 @@ const usuarioSchema = new Schema({
         type: String,
         enum: ['residente', 'admin'],
         default: 'residente',
-        required: true
+        required: false
     }
 });
 

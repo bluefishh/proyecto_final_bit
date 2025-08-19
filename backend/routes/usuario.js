@@ -1,19 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/usuarioModel');
+const bcrypt = require('bcryptjs');
 
 // Login de usuario
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecreto';
 
 router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+    const { email, contrasena } = req.body;
     try {
         const usuario = await Usuario.findOne({ email });
         if (!usuario) {
             return res.status(401).json({ message: 'Usuario no existe, por favor cree una cuenta' });
         }
-        const esValida = await usuario.compararContrasena(password);
+    const esValida = await usuario.compararContrasena(contrasena);
         if (!esValida) {
             return res.status(401).json({ message: 'Usuario o contraseña incorrecta' });
         }
@@ -24,6 +25,44 @@ router.post('/login', async (req, res) => {
         res.json({ usuario: obj, token });
     } catch (error) {
         res.status(500).json({ message: 'Error en el login' });
+    }
+});
+
+// Registro web (formulario)
+router.get('/register', (req, res) => {
+    res.json({ error: null, formData: {} });
+});
+
+// Registro de usuario
+router.post('/register', async (req, res) => {
+    const { primerNombre, segundoNombre, primerApellido, segundoApellido, email, contrasena, confirmarContrasena, fechaNacimiento, genero } = req.body;
+    const formData = req.body;
+
+    if (contrasena !== confirmarContrasena) {
+        return res.status(400).json({ error: 'Las contraseñas no coinciden.', formData });
+    }
+
+    try {
+        const usuarioExistente = await Usuario.findOne({ email });
+        if (usuarioExistente) {
+            return res.status(400).json({ error: 'El correo ya está registrado.', formData });
+        }
+
+        const nuevoUsuario = new Usuario({
+            primerNombre,
+            segundoNombre,
+            primerApellido,
+            segundoApellido,
+            email,
+            contrasena,
+            fechaNacimiento,
+            genero
+        });
+
+        await nuevoUsuario.save();
+        res.status(201).json({ message: 'Usuario creado exitosamente' });
+    } catch (err) {
+        res.status(500).json({ error: err.message, details: err });
     }
 });
 

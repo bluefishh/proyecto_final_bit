@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
 	selector: 'app-login',
@@ -25,7 +25,7 @@ export class LoginComponent {
 	) {
 		this.loginForm = this.fb.group({
 			email: ['', [Validators.required, Validators.email]],
-			password: ['', Validators.required],
+			contrasena: ['', Validators.required],
 		});
 		this.titleService.setTitle('Iniciar sesión - Community Alert System');
 	}
@@ -35,13 +35,11 @@ export class LoginComponent {
 	}
 
 	onSubmit() {
-	console.log('Form value:', this.loginForm.value);
-	console.log('Form valid:', this.loginForm.valid);
 	if (this.loginForm.valid) {
 			this.error = null;
 			const email = this.loginForm.value.email;
-			const password = this.loginForm.value.password;
-			this.authService.login(email, password).subscribe({
+			const contrasena = this.loginForm.value.contrasena;
+			this.authService.login(email, contrasena).subscribe({
 				next: (response) => {
 					// Si el backend envía un token, se guarda en localStorage
 					if (response.token) {
