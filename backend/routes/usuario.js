@@ -20,9 +20,13 @@ router.post('/login', async (req, res) => {
         }
         const obj = usuario.toObject();
         delete obj.contrasena;
+        // Construir nombre corto (primer nombre y primer apellido)
+        const nombre = [usuario.primerNombre, usuario.primerApellido]
+            .filter(Boolean)
+            .join(' ');
         // Se genera el token JWT
         const token = jwt.sign({ id: usuario._id, email: usuario.email, rol: usuario.rol }, JWT_SECRET, { expiresIn: '1d' });
-        res.json({ usuario: obj, token });
+        res.json({ usuario: obj, token, nombre });
     } catch (error) {
         res.status(500).json({ message: 'Error en el login' });
     }

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent {
 	constructor(
 		private fb: FormBuilder,
 		private titleService: Title,
-		private authService: AuthService
+		private authService: AuthService,
+		private router: Router
 	) {
 		this.loginForm = this.fb.group({
 			email: ['', [Validators.required, Validators.email]],
@@ -35,19 +37,19 @@ export class LoginComponent {
 	}
 
 	onSubmit() {
-	if (this.loginForm.valid) {
+		if (this.loginForm.valid) {
 			this.error = null;
 			const email = this.loginForm.value.email;
 			const contrasena = this.loginForm.value.contrasena;
 			this.authService.login(email, contrasena).subscribe({
 				next: (response) => {
-					// Si el backend envía un token, se guarda en localStorage
 					if (response.token) {
 						localStorage.setItem('token', response.token);
-						console.log('Login exitoso');
+						if (response.nombre) {
+							localStorage.setItem('nombreUsuario', response.nombre);
+						}
+						this.router.navigate(['/comunidades']);
 					}
-
-					// TODO: Redirigir al usuario al menú principal o dashboard cuando esté implementado
 				},
 				error: (err) => {
 					this.error = err.error?.message || 'Credenciales incorrectas.';

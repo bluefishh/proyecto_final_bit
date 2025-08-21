@@ -1,19 +1,25 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
 import { App } from './app';
+import { ComunidadesComponent } from './comunidades/comunidades.component';
+import { AuthGuard } from './auth/auth.guard';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    BrowserModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    RouterModule.forRoot(routes),
-  ],
-  bootstrap: [App]
+	declarations: [
+	],
+	imports: [
+		BrowserModule,
+		ReactiveFormsModule,
+		FormsModule,
+		HttpClientModule,
+		RouterModule.forRoot(routes),
+		ComunidadesComponent
+	],
+	providers: [AuthGuard],
+	bootstrap: [App]
 })
-export class AppModule {}
+export class AppModule { }

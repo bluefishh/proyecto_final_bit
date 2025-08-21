@@ -11,6 +11,7 @@ app.use(express.json()); // body parser JSON para analizar el cuerpo de las soli
 
 // Importar rutas
 const indexRoutes = require('./routes/index');
+const apiRoutes = require('./routes/api');
 const alertaRoutes = require('./routes/alerta');
 const campanniaReciclajeRoutes = require('./routes/campanniaReciclaje');
 const comercioLocalRoutes = require('./routes/comercioLocal');
@@ -21,6 +22,7 @@ const usuarioRoutes = require('./routes/usuario');
 
 // Rutas
 app.use('/', indexRoutes);
+app.use('/api', apiRoutes);
 app.use('/alertas', alertaRoutes);
 app.use('/campannias', campanniaReciclajeRoutes);
 app.use('/comercios', comercioLocalRoutes);
