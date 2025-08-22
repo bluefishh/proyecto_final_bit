@@ -13,4 +13,12 @@ export class AlertasService {
     crearAlerta(alerta: any): Observable<any> {
         return this.http.post<any>('/alertas', alerta);
     }
+
+    editarAlerta(alerta: any): Observable<any> {
+        return this.http.put<any>(`/alertas/${alerta._id}`, alerta);
+    }
+
+    eliminarAlerta(alertaId: string): Observable<any> {
+        return this.http.delete<any>(`/alertas/${alertaId}`);
+    }
 }

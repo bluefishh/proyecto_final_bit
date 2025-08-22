@@ -26,15 +26,23 @@
                                     class="img-fluid" style="width: 180px; height: 100%; object-fit: cover;">
                             </div>
                             <div class="flex-grow-1">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <small class="text-muted">{{ alert.fecha | date:'short' }}</small>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h3 class="mb-0">{{ alert.titulo }}</h3>
+                                    <div *ngIf="isAdmin">
+                                        <button class="btn btn-sm btn-primary me-2" (click)="editarAlerta(alert)">
+                                            <i class="bi bi-pencil"></i> Editar
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" (click)="eliminarAlerta(alert)">
+                                            <i class="bi bi-trash"></i> Eliminar
+                                        </button>
+                                    </div>
                                 </div>
-                                <h3 class="mt-4">{{ alert.titulo }}</h3>
+                                <small class="text-muted">{{ alert.fecha | date:'short' }}</small>
                                 <p class="text-muted">{{ alert.descripcion }}</p>
                                 <small class="text-muted">
                                     Publicado por:
-                                    <span *ngIf="alert.publicador">{{ alert.publicador.primerNombre }} {{ alert.publicador.primerApellido }}</span>
-                                    <span *ngIf="!alert.publicador">Usuario desconocido o eliminado</span>
+                                    <span *ngIf="alert.publicadoPor">{{ alert.publicadoPor.primerNombre }} {{ alert.publicadoPor.primerApellido }}</span>
+                                    <span *ngIf="!alert.publicadoPor">Usuario desconocido o eliminado</span>
                                 </small>
                             </div>
                         </div>

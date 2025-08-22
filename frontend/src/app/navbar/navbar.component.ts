@@ -18,11 +18,11 @@ export class NavbarComponent {
     constructor(private router: Router) {
         const nombre = localStorage.getItem('nombreUsuario');
         this.nombreUsuario = nombre ? nombre : 'Usuario';
-        const usuarioStr = localStorage.getItem('usuario');
-        if (usuarioStr) {
+        const token = localStorage.getItem('token');
+        if (token) {
             try {
-                const usuario = JSON.parse(usuarioStr);
-                this.esAdmin = usuario.rol === 'admin';
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                this.esAdmin = payload.rol === 'admin';
             } catch (e) {
                 this.esAdmin = false;
             }

@@ -15,6 +15,7 @@ export class AlertasComponent implements OnInit {
     comunidad: any = null;
     alerts: any[] = [];
     tipoActivo: 'todas' | 'seguridad' | 'emergencia' | 'comunidad' = 'todas';
+    isAdmin: boolean = false;
 
     constructor(private alertasService: AlertasService, private cdr: ChangeDetectorRef) { }
 
@@ -23,6 +24,16 @@ export class AlertasComponent implements OnInit {
         if (comunidadStr) {
             this.comunidad = JSON.parse(comunidadStr);
             this.cargarAlertas();
+        }
+        // Detectar si el usuario es admin
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                this.isAdmin = payload.rol === 'admin';
+            } catch (e) {
+                this.isAdmin = false;
+            }
         }
     }
 
@@ -91,6 +102,67 @@ export class AlertasComponent implements OnInit {
                     },
                     error: (err: any) => {
                         Swal.fire('Error al crear alerta', err.message || '', 'error');
+                    }
+                });
+            }
+        });
+    }
+
+    editarAlerta(alert: any) {
+        Swal.fire({
+            title: 'Editar alerta',
+            html:
+                `<input id='titulo' class='swal2-input' placeholder='Título' value='${alert.titulo}'>` +
+                `<textarea id='descripcion' class='swal2-textarea' placeholder='Descripción'>${alert.descripcion}</textarea>`,
+            showCancelButton: true,
+            confirmButtonText: 'Guardar',
+            cancelButtonText: 'Cancelar',
+            preConfirm: () => {
+                const titulo = (document.getElementById('titulo') as HTMLInputElement)?.value;
+                const descripcion = (document.getElementById('descripcion') as HTMLTextAreaElement)?.value;
+                if (!titulo || !descripcion) {
+                    Swal.showValidationMessage('Todos los campos son obligatorios');
+                    return false;
+                }
+                return { titulo, descripcion };
+            }
+        }).then((result) => {
+            if (result.isConfirmed && result.value) {
+                const alertaEditada = {
+                    ...alert,
+                    titulo: result.value.titulo,
+                    descripcion: result.value.descripcion
+                };
+                this.alertasService.editarAlerta(alertaEditada).subscribe({
+                    next: () => {
+                        Swal.fire('¡Alerta editada!', '', 'success');
+                        this.cargarAlertas();
+                    },
+                    error: (err: any) => {
+                        Swal.fire('Error al editar alerta', err.message || '', 'error');
+                    }
+                });
+            }
+        });
+    }
+
+    eliminarAlerta(alert: any) {
+        Swal.fire({
+            title: '¿Eliminar alerta?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.alertasService.eliminarAlerta(alert._id).subscribe({
+                    next: () => {
+                        Swal.fire('¡Alerta eliminada!', '', 'success');
+                        this.cargarAlertas();
+                    },
+                    error: (err: any) => {
+                        Swal.fire('Error al eliminar alerta', err.message || '', 'error');
                     }
                 });
             }

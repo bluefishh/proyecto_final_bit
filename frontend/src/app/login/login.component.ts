@@ -21,7 +21,6 @@ export class LoginComponent {
 
 	constructor(
 		private fb: FormBuilder,
-		private titleService: Title,
 		private authService: AuthService,
 		private router: Router
 	) {
@@ -29,7 +28,6 @@ export class LoginComponent {
 			email: ['', [Validators.required, Validators.email]],
 			contrasena: ['', Validators.required],
 		});
-		this.titleService.setTitle('Iniciar sesión - Community Alert System');
 	}
 
 	togglePasswordVisibility() {
