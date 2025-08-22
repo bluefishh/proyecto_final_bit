@@ -28,6 +28,7 @@ export class ComunidadesComponent implements OnInit {
             if (result.isConfirmed) {
                 localStorage.removeItem('token');
                 localStorage.removeItem('nombreUsuario');
+                localStorage.removeItem('comunidadSeleccionada');
                 this.router.navigate(['/login']);
             }
         });
@@ -46,14 +47,14 @@ export class ComunidadesComponent implements OnInit {
     constructor(private comunidadesService: ComunidadesService, private cdr: ChangeDetectorRef, private router: Router) { }
 
     ngOnInit() {
-            this.comunidadesService.getMisComunidades().subscribe(data => {
-                this.misComunidades = data;
-                if (this.tabActivo === 'mis') {
-                    this.filtrarComunidades();
-                }
-            });
-            this.comunidadesFiltradas = [];
-            this.nombreUsuario = localStorage.getItem('nombreUsuario') || '';
+        this.comunidadesService.getMisComunidades().subscribe(data => {
+            this.misComunidades = data;
+            if (this.tabActivo === 'mis') {
+                this.filtrarComunidades();
+            }
+        });
+        this.comunidadesFiltradas = [];
+        this.nombreUsuario = localStorage.getItem('nombreUsuario') || '';
     }
 
     filtrarComunidades() {
@@ -89,7 +90,8 @@ export class ComunidadesComponent implements OnInit {
     }
 
     ingresarComunidad(comunidad: any) {
-        // TODO: Implementar la lógica para ingresar a la comunidad
+        localStorage.setItem('comunidadSeleccionada', JSON.stringify(comunidad));
+        this.router.navigate(['/alertas']);
     }
 
     unirseComunidad(item: any) {
@@ -101,7 +103,6 @@ export class ComunidadesComponent implements OnInit {
                 usuarioId = payload.id;
             } catch (e) {}
         }
-        // Usar los campos que vienen del backend
         const comunidad = {
             apiId: item.id,
             nombre: item.barrio || item.nombre || '',

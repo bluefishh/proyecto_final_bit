@@ -3,9 +3,15 @@ const router = express.Router();
 const Alerta = require('../models/alertaModel');
 
 // Obtener todas las alertas
+// Obtener alertas filtradas por comunidadId (si se provee)
 router.get('/', async (req, res) => {
     try {
-        const alertas = await Alerta.find();
+        const { comunidadId } = req.query;
+        let query = {};
+        if (comunidadId) {
+            query.comunidad = comunidadId;
+        }
+        const alertas = await Alerta.find(query).populate('publicadoPor', 'primerNombre primerApellido');
         res.json(alertas);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener las alertas' });

@@ -1,0 +1,40 @@
+<header class="shadow-sm">
+    <nav class="navbar navbar-expand-lg bg-white py-3">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="CAS_without_bg_navbar.png" alt="Logo" width="130" class="me-2">
+            </a>
+            <div class="navbar-nav mx-auto">
+                <a class="nav-link px-3 mx-1"
+                    [ngClass]="{ 'active bg-danger text-white rounded': isActive('/alertas'), 'text-secondary': !isActive('/alertas') }"
+                    routerLink="/alertas">Alertas</a>
+                <a class="nav-link mx-1"
+                    [ngClass]="{ 'active bg-danger text-white rounded': isActive('/gestionresiduos'), 'text-secondary': !isActive('/wastemanagement') }"
+                    routerLink="/wastemanagement">Gestión de Residuos</a>
+                <a class="nav-link mx-1"
+                    [ngClass]="{ 'active bg-danger text-white rounded': isActive('/comerciolocal'), 'text-secondary': !isActive('/localcommerce') }"
+                    routerLink="/localcommerce">Comercio Local</a>
+                <a *ngIf="esAdmin" class="nav-link mx-1"
+                    [ngClass]="{ 'active bg-danger text-white rounded': isActive('/administracion'), 'text-secondary': !isActive('/administracion') }"
+                    routerLink="/administracion ">Administración</a>
+            </div>
+            <div class="dropdown" [class.show]="dropdownOpen">
+                <button class="btn btn-light d-flex align-items-center dropdown-toggle" type="button"
+                    (click)="dropdownOpen = !dropdownOpen" aria-expanded="dropdownOpen">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-person-circle me-2" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                        <path fill-rule="evenodd"
+                            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                    </svg>
+                    <span>{{ nombreUsuario }}</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end mt-2" [class.show]="dropdownOpen">
+                    <li><a class="dropdown-item" href="#" (click)="seleccionarComunidad($event)">Seleccionar
+                            comunidad</a></li>
+                    <li><a class="dropdown-item" href="#" (click)="logout($event)">Cerrar sesión</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

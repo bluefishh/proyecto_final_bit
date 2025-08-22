@@ -1,0 +1,13 @@
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+.nav-link.active {
+    background-color: #800000 !important;
+    border-color: #800000 !important;
+}
+
+.nav-link:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
