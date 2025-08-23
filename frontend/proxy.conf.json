@@ -23,9 +23,13 @@
         "target": "http://localhost:3000",
         "secure": false,
         "changeOrigin": true
-    }
-    ,
+    },
     "/puntos": {
+        "target": "http://localhost:3000",
+        "secure": false,
+        "changeOrigin": true
+    },
+    "/comercios": {
         "target": "http://localhost:3000",
         "secure": false,
         "changeOrigin": true

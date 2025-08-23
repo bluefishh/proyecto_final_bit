@@ -13,10 +13,9 @@
                     [ngClass]="{ 'active bg-danger text-white rounded': isActive('/manejoresiduos'), 'text-secondary': !isActive('/manejoresiduos') }"
                     href="#"
                     (click)="navegar('/manejoresiduos', $event)">Gestión de Residuos</a>
-                <!-- <a class="nav-link mx-1"
+                <a class="nav-link mx-1"
                     [ngClass]="{ 'active bg-danger text-white rounded': isActive('/comerciolocal'), 'text-secondary': !isActive('/comerciolocal') }"
-                    (click)="navegar('/comerciolocal', $event)">Comercio Local</a> -->
-                <a class="nav-link mx-1 text-secondary disabled" href="#" tabindex="-1" aria-disabled="true">Comercio Local</a>
+                    (click)="navegar('/comerciolocal', $event)">Comercio Local</a>
             </div>
             <div class="dropdown" [class.show]="dropdownOpen">
                 <button class="btn btn-light d-flex align-items-center dropdown-toggle" type="button"

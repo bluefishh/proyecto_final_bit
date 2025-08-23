@@ -7,6 +7,7 @@ import { routes } from './app.routes';
 import { App } from './app';
 import { ComunidadesComponent } from './comunidades/comunidades.component';
 import { ManejoResiduosComponent } from './manejo-residuos/manejo-residuos.component';
+import { ComercioLocalComponent } from './comercio-local/comercio-local.component';
 import { AuthGuard } from './auth/auth.guard';
 
 @NgModule({
@@ -19,7 +20,8 @@ import { AuthGuard } from './auth/auth.guard';
 		HttpClientModule,
 		RouterModule.forRoot(routes),
 		ComunidadesComponent,
-		ManejoResiduosComponent
+		ManejoResiduosComponent,
+		ComercioLocalComponent
 	],
 	providers: [AuthGuard],
 	bootstrap: [App]

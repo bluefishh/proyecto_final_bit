@@ -1,0 +1,65 @@
+<app-navbar></app-navbar>
+<div class="container mt-5 pt-4">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-md-9">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div>
+                    <h1 class="fw-bold">Barrio {{ comunidad?.nombre }}</h1>
+                    <p class="text-muted">Está viendo todas las ofertas en comercios locales de esta comunidad</p>
+                </div>
+                <div class="text-end mb-4">
+                    <button class="btn btn-outline-secondary" (click)="crearComercio()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                        </svg> Crear nueva oferta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="comercios && comercios.length > 0; else noOfertas">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-md-9">
+                <div *ngFor="let comercio of comercios" class="card mb-4">
+                    <div class="card-body d-flex">
+                        <div class="flex-shrink-0 me-4">
+                            <img src="com-loc.jpg" alt="Comercio" class="img-fluid h-100"
+                                style="width: 200px; object-fit: cover;">
+                        </div>
+                        <div class="d-flex gap-4 align-items-start w-100">
+                            <div class="d-flex flex-column justify-content-start align-items-start w-100">
+                                <div class="d-flex justify-content-between align-items-start w-100">
+                                    <h4 class="h4 mb-0">{{ comercio.nombreComercio }}</h4>
+                                    <span class="badge badge-descuento">{{ comercio.descuento }}</span>
+                                </div>
+                                <p class="text-muted small">Válido hasta: {{ comercio.fechaVigencia | date:'shortDate'
+                                    }}</p>
+                                <p class="text-muted">{{ comercio.descripcion }}</p>
+                                <p class="text-muted">{{ comercio.direccionComercio }}</p>
+                                <small class="text-muted">
+                                    Publicado por:
+                                    <span *ngIf="comercio.publicadoPor">{{ comercio.publicadoPor.primerNombre }} {{ comercio.publicadoPor.primerApellido }}</span>
+                                    <span *ngIf="!comercio.publicadoPor">Usuario desconocido o eliminado</span>
+                                </small>
+                                <div *ngIf="isAdmin" class="mt-2">
+                                    <button class="btn btn-sm btn-primary me-2" (click)="editarComercio(comercio)">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" (click)="eliminarComercio(comercio)">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #noOfertas>
+        <p class="text-muted text-center">No hay ofertas en esta comunidad.</p>
+    </ng-template>
+</div>
