@@ -38,6 +38,16 @@ router.post('/', async (req, res) => {
     try {
         const nueva = new Comunidad(req.body);
         const guardada = await nueva.save();
+        const HorarioRecoleccionResiduos = require('../models/horarioRecoleccionResiduosModel');
+        const dias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+        const horariosDefault = dias.map(dia => ({
+            dia,
+            horaInicio: '08:00',
+            horaFin: '10:00',
+            comunidad: guardada._id
+        }));
+    const result = await HorarioRecoleccionResiduos.insertMany(horariosDefault);
+    console.log('Horarios creados para comunidad:', guardada._id, result);
         res.status(201).json(guardada);
     } catch (error) {
         res.status(400).json({ error: 'Error al crear la comunidad' });
@@ -89,7 +99,24 @@ router.post('/unirse', async (req, res) => {
                 miembros: [usuarioId]
             });
             await comunidad.save();
-            return res.status(201).json({ comunidad, mensaje: 'Comunidad creada y usuario unido' });
+            // Crear horarios por defecto para la nueva comunidad
+            try {
+                const HorarioRecoleccionResiduos = require('../models/horarioRecoleccionResiduosModel');
+                const dias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+                const horariosDefault = dias.map(dia => ({
+                    dia,
+                    horaInicio: '08:00',
+                    horaFin: '10:00',
+                    comunidad: comunidad._id
+                }));
+                const result = await HorarioRecoleccionResiduos.insertMany(horariosDefault);
+                if (!result || result.length === 0) {
+                    return res.status(500).json({ comunidad, mensaje: 'Comunidad creada pero horarios no insertados', error: 'No se crearon horarios' });
+                }
+                return res.status(201).json({ comunidad, mensaje: 'Comunidad creada y usuario unido', horarios: result });
+            } catch (err) {
+                return res.status(500).json({ comunidad, mensaje: 'Comunidad creada pero horarios no insertados', error: err.message });
+            }
         } else {
             if (!comunidad.miembros.includes(usuarioId)) {
                 comunidad.miembros.push(usuarioId);
@@ -100,7 +127,7 @@ router.post('/unirse', async (req, res) => {
             }
         }
     } catch (error) {
-        res.status(500).json({ error: 'Error al unirse a la comunidad' });
+        res.status(500).json({ error: 'Error al unirse a la comunidad', detalle: error.message });
     }
 });
 

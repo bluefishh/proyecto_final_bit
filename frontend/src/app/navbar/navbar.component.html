@@ -7,16 +7,16 @@
             <div class="navbar-nav mx-auto">
                 <a class="nav-link px-3 mx-1"
                     [ngClass]="{ 'active bg-danger text-white rounded': isActive('/alertas'), 'text-secondary': !isActive('/alertas') }"
-                    routerLink="/alertas">Alertas</a>
+                    href="#"
+                    (click)="navegar('/alertas', $event)">Alertas</a>
                 <a class="nav-link mx-1"
-                    [ngClass]="{ 'active bg-danger text-white rounded': isActive('/gestionresiduos'), 'text-secondary': !isActive('/wastemanagement') }"
-                    routerLink="/wastemanagement">Gestión de Residuos</a>
-                <a class="nav-link mx-1"
-                    [ngClass]="{ 'active bg-danger text-white rounded': isActive('/comerciolocal'), 'text-secondary': !isActive('/localcommerce') }"
-                    routerLink="/localcommerce">Comercio Local</a>
-                <a *ngIf="esAdmin" class="nav-link mx-1"
-                    [ngClass]="{ 'active bg-danger text-white rounded': isActive('/administracion'), 'text-secondary': !isActive('/administracion') }"
-                    routerLink="/administracion ">Administración</a>
+                    [ngClass]="{ 'active bg-danger text-white rounded': isActive('/manejoresiduos'), 'text-secondary': !isActive('/manejoresiduos') }"
+                    href="#"
+                    (click)="navegar('/manejoresiduos', $event)">Gestión de Residuos</a>
+                <!-- <a class="nav-link mx-1"
+                    [ngClass]="{ 'active bg-danger text-white rounded': isActive('/comerciolocal'), 'text-secondary': !isActive('/comerciolocal') }"
+                    (click)="navegar('/comerciolocal', $event)">Comercio Local</a> -->
+                <a class="nav-link mx-1 text-secondary disabled" href="#" tabindex="-1" aria-disabled="true">Comercio Local</a>
             </div>
             <div class="dropdown" [class.show]="dropdownOpen">
                 <button class="btn btn-light d-flex align-items-center dropdown-toggle" type="button"

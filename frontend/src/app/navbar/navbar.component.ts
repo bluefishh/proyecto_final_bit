@@ -8,25 +8,20 @@ import Swal from 'sweetalert2';
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.css'],
     standalone: true,
-    imports: [CommonModule, NgClass, NgIf]
+    imports: [CommonModule, NgClass]
 })
 export class NavbarComponent {
+    navegar(ruta: string, event?: Event) {
+        if (event) event.preventDefault();
+        this.router.navigate([ruta]);
+    }
+
     dropdownOpen = false;
     nombreUsuario = '';
-    esAdmin = false;
 
     constructor(private router: Router) {
         const nombre = localStorage.getItem('nombreUsuario');
         this.nombreUsuario = nombre ? nombre : 'Usuario';
-        const token = localStorage.getItem('token');
-        if (token) {
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                this.esAdmin = payload.rol === 'admin';
-            } catch (e) {
-                this.esAdmin = false;
-            }
-        }
     }
 
     isActive(path: string): boolean {

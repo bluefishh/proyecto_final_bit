@@ -4,6 +4,7 @@ import { RegisterComponent } from './register/register.component';
 import { ComunidadesComponent } from './comunidades/comunidades.component';
 import { AuthGuard } from './auth/auth.guard';
 import { AlertasComponent } from './alertas/alertas.component';
+import { ManejoResiduosComponent } from './manejo-residuos/manejo-residuos.component';
 
 export const routes: Routes = [
 	{ path: '', component: LoginComponent },
@@ -11,4 +12,5 @@ export const routes: Routes = [
 	{ path: 'register', component: RegisterComponent },
 	{ path: 'comunidades', component: ComunidadesComponent },
 	{ path: 'alertas', component: AlertasComponent },
+	{ path: 'manejoresiduos', component: ManejoResiduosComponent },
 ];

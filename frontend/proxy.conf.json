@@ -13,5 +13,21 @@
         "target": "http://localhost:3000",
         "secure": false,
         "changeOrigin": true
+    },
+    "/horarios": {
+        "target": "http://localhost:3000",
+        "secure": false,
+        "changeOrigin": true
+    },
+    "/campannias": {
+        "target": "http://localhost:3000",
+        "secure": false,
+        "changeOrigin": true
+    }
+    ,
+    "/puntos": {
+        "target": "http://localhost:3000",
+        "secure": false,
+        "changeOrigin": true
     }
 }

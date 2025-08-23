@@ -35,6 +35,6 @@ const comunidadSchema = new Schema({
 });
 
 // Creación del modelo de Comunidad
-const Comunidad = mongoose.model('Comunidad', comunidadSchema);
+const Comunidad = mongoose.model('Comunidad', comunidadSchema, 'comunidades');
 
 module.exports = Comunidad;

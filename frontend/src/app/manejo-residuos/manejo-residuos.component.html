@@ -1,0 +1,110 @@
+<app-navbar></app-navbar>
+<div class="container mt-5 pt-4">
+	<div class="row">
+		<div class="col-lg-8">
+			<div class="d-flex justify-content-between align-items-center mb-4">
+				<h2 class="fw-bold mb-0">Horario de recolección</h2>
+				<button *ngIf="esAdmin" class="btn btn-outline-secondary" (click)="editarHorarios()">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+						<path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-9.193 9.193a.5.5 0 0 1-.168.11l-4 1.5a.5.5 0 0 1-.65-.65l1.5-4a.5.5 0 0 1 .11-.168l9.193-9.193zM11.207 2L2 11.207V13h1.793L14 3.793 11.207 2z"/>
+					</svg> Editar horarios
+				</button>
+			</div>
+			<div class="card mb-4">
+				<div class="card-body">
+					<table class="table table-bordered text-center">
+						<thead>
+							<tr>
+								<th>Lunes</th>
+								<th>Martes</th>
+								<th>Miércoles</th>
+								<th>Jueves</th>
+								<th>Viernes</th>
+								<th>Sábado</th>
+								<th>Domingo</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{ schedule.lunes }}</td>
+								<td>{{ schedule.martes }}</td>
+								<td>{{ schedule['miércoles'] }}</td>
+								<td>{{ schedule.jueves }}</td>
+								<td>{{ schedule.viernes }}</td>
+								<td>{{ schedule['sábado'] }}</td>
+								<td>{{ schedule.domingo }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="d-flex justify-content-between align-items-center mb-4">
+				<h2 class="fw-bold">Campañas de reciclaje</h2>
+				<button class="btn btn-outline-secondary" (click)="crearCampannia()">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+						class="bi bi-plus-lg" viewBox="0 0 16 16">
+						<path fill-rule="evenodd"
+							d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+					</svg> Crear nueva campaña
+				</button>
+			</div>
+			<div *ngIf="campaigns && campaigns.length > 0; else noCampaigns">
+				<div class="row">
+					<div class="col-md-6" *ngFor="let campannia of campaigns">
+						<div class="card mb-4">
+							<div class="card-body">
+								<h3>{{ campannia.nombre }}</h3>
+								<p class="text-muted">Fecha: {{ campannia.fechaCampannia | date:'shortDate' }}</p>
+								<p class="text-muted">Hora: {{ campannia.horaCampannia }}</p>
+								<p>{{ campannia.descripcion }}</p>
+								<p class="text-muted">Lugar: {{ campannia.ubicacion }}</p>
+								<div *ngIf="esAdmin" class="mt-2">
+									<button class="btn btn-sm btn-primary me-2" (click)="editarCampannia(campannia)">
+										<i class="bi bi-pencil"></i> Editar
+									</button>
+									<button class="btn btn-sm btn-danger" (click)="eliminarCampannia(campannia)">
+										<i class="bi bi-trash"></i> Eliminar
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<ng-template #noCampaigns>
+				<p class="text-muted text-center">No hay campañas de reciclaje en esta comunidad.</p>
+			</ng-template>
+		</div>
+		<div class="col-lg-4">
+			<div class="d-flex justify-content-between align-items-center mb-4">
+				<h2 class="fw-bold mb-0">Puntos de reciclaje</h2>
+				<button *ngIf="esAdmin" class="btn btn-outline-secondary" (click)="crearPuntoReciclaje()">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+					</svg> Crear punto de reciclaje
+				</button>
+			</div>
+			<div *ngIf="points && points.length > 0; else noPoints">
+				<div *ngFor="let point of points">
+					<div class="card mb-3">
+						<div class="card-body">
+							<h3>{{ point.nombre }}</h3>
+							<p class="text-muted">{{ point.direccion }}</p>
+							<div *ngIf="esAdmin" class="mt-2">
+								<button class="btn btn-sm btn-primary me-2" (click)="editarPunto(point)">
+									<i class="bi bi-pencil"></i> Editar
+								</button>
+								<button class="btn btn-sm btn-danger" (click)="eliminarPunto(point)">
+									<i class="bi bi-trash"></i> Eliminar
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<ng-template #noPoints>
+				<p class="text-muted text-center">No hay puntos de reciclaje en esta comunidad.</p>
+			</ng-template>
+		</div>
+	</div>
+</div>
